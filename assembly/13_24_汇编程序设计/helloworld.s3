@@ -1,0 +1,40 @@
+	.file	"helloworld.c"
+	.text
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC0:
+	.string	"Hello world"
+	.section	.text.startup,"ax",@progbits
+	.p2align 4,,15
+	.globl	main
+	.type	main, @function
+main:
+.LFB41:
+	.cfi_startproc
+	pushl	%ebx
+	.cfi_def_cfa_offset 8
+	.cfi_offset 3, -8
+	call	__x86.get_pc_thunk.bx
+	addl	$_GLOBAL_OFFSET_TABLE_, %ebx
+	leal	.LC0@GOTOFF(%ebx), %eax
+	pushl	%eax
+	.cfi_def_cfa_offset 12
+	call	puts@PLT
+	pushl	$0
+	.cfi_def_cfa_offset 16
+	call	exit@PLT
+	.cfi_endproc
+.LFE41:
+	.size	main, .-main
+	.section	.text.__x86.get_pc_thunk.bx,"axG",@progbits,__x86.get_pc_thunk.bx,comdat
+	.globl	__x86.get_pc_thunk.bx
+	.hidden	__x86.get_pc_thunk.bx
+	.type	__x86.get_pc_thunk.bx, @function
+__x86.get_pc_thunk.bx:
+.LFB42:
+	.cfi_startproc
+	movl	(%esp), %ebx
+	ret
+	.cfi_endproc
+.LFE42:
+	.ident	"GCC: (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0"
+	.section	.note.GNU-stack,"",@progbits
