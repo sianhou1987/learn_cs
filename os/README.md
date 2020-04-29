@@ -58,10 +58,15 @@ rust-objdump .\target\riscv64imac-unknown-none-elf\debug\ros -d --arch-name=risc
 ### create binary file
 ``` shell
 $ rust-objcopy .\target\riscv64imac-unknown-none-elf\debug\ros --strip-all -O binary .\target\riscv64imac-unknown-none-elf\debug\kernel.bin
+
+$ rust-objcopy target/riscv64imac-unknown-none-elf/debug/ros --strip-all -O binary target/riscv64imac-unknown-none-elf/debug/kernel.bin
+
 ```
 这里 ```--strip-all``` 表明丢弃所有符号表及调试信息，```-O binary``` 表示输出为二进制文件。
 
 ### run
 ``` shell
 $ qemu-system-riscv64 -machine virt -nographic -bios default -device loader,file=.\target\riscv64imac-unknown-none-elf\debug\kernel.bin,addr=0x80200000
+
+$ qemu-system-riscv64 -machine virt -nographic -bios default -device loader,file=target/riscv64imac-unknown-none-elf/debug/kernel.bin,addr=0x80200000
 ```
