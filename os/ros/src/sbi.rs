@@ -4,7 +4,7 @@
 fn sbi_call(which: usize, arg0: usize, arg1: usize, arg2: usize) -> usize {
     let ret;
     unsafe {
-        asm!("ecall"
+        llvm_asm!("ecall"
             : "={x10}" (ret)
             : "{x10}" (arg0), "{x11}" (arg1), "{x12}" (arg2), "{x17}" (which)
             : "memory"
@@ -19,6 +19,18 @@ pub fn console_putchar(ch: usize) {
 
 pub fn console_getchar() -> usize {
     sbi_call(SBI_CONSOLE_GETCHAR, 0, 0, 0)
+}
+
+pub fn set_timer(stime_value: u64) {
+    #[cfg(target_pointer_width = "32")]
+    sbi_call(
+        SBI_SET_TIMER,
+        stime_value as usize,
+        (stime_value >> 32) as usize,
+        0,
+    );
+    #[cfg(target_pointer_width = "64")]
+    sbi_call(SBI_SET_TIMER, stime_value as usize, 0, 0);
 }
 
 const SBI_SET_TIMER: usize = 0;
