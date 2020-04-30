@@ -11,3 +11,4 @@ mod io;
 mod init;
 mod interrupt;
 mod lang_items;
+mod timer;
