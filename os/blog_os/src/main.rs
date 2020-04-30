@@ -12,8 +12,18 @@ pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
     blog_os::init();
-    // invoke a breakpoint exception
-    x86_64::instructions::interrupts::int3();
+
+    fn stack_overflow() {
+        stack_overflow(); // for each recursion, the return address is pushed
+    }
+
+    // trigger a stack overflow
+    stack_overflow();
+
+    // trigger a page fault
+    unsafe {
+        *(0xdeadbeef as *mut u64) = 42;
+    };
 
     #[cfg(test)]
     test_main();
